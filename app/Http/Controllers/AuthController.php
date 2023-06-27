@@ -39,21 +39,28 @@ class AuthController extends Controller
                     'type' => 'bearer',
                 ]
             ]);
-
     }
 
     public function register(Request $request){
         $request->validate([
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
+            'password' => [
+                'required',
+                'string',
+                'min:2',
+                'regex:/^(?=.*[0-9])/'
+            ],
         ]);
 
         $user = User::create([
-            'name' => $request->name,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
 
         $token = Auth::login($user);
         return response()->json([
