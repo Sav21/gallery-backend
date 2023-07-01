@@ -17,9 +17,10 @@ class GalleryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name(),
-            'description' => $this->faker->text(),
-            'urls' => $this->faker->image(),
+            'name' => fake()->sentence(2),
+            'description' => fake()->text(100),
+            'urls' => json_encode([fake()->imageUrl(), fake()->imageUrl(), fake()->imageUrl()]),
+            'user_id' => rand(1, 10),
         ];
     }
 }
